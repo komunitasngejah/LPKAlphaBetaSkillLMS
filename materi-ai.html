@@ -5,24 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Materi Generative AI - LPK Alpha Beta Skill</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; line-height: 1.6; }
         .navbar { background-color: #2c3e50; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .navbar h2 { margin: 0; font-size: 20px; }
         .btn-back { background-color: #95a5a6; color: white; border: none; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; }
         .btn-back:hover { background-color: #7f8c8d; }
-        .container { display: flex; flex-wrap: wrap; padding: 20px; max-width: 1000px; margin: auto; gap: 20px; }
-        .content-area { flex: 2; min-width: 300px; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .content-area h1 { color: #2c3e50; margin-top: 0; font-size: 24px;}
-        .badge { background-color: #9b59b6; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 15px; }
-        .module { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #ecf0f1; }
-        .module h3 { color: #3498db; margin-bottom: 10px; }
-        .module p { font-size: 15px; color: #555; line-height: 1.6; }
-        .video-placeholder { width: 100%; height: 300px; background-color: #bdc3c7; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: #2c3e50; font-weight: bold; margin-bottom: 15px; }
-        .sidebar { flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 20px; }
+        
+        .container { display: flex; flex-wrap: wrap; padding: 20px; max-width: 1100px; margin: auto; gap: 20px; }
+        
+        /* Area Konten Utama */
+        .content-area { flex: 2; min-width: 300px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .content-area h1 { color: #2c3e50; margin-top: 0; font-size: 26px; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px;}
+        .badge { background-color: #9b59b6; color: white; padding: 5px 12px; border-radius: 12px; font-size: 13px; display: inline-block; margin-bottom: 15px; font-weight: bold;}
+        
+        .module { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px dashed #bdc3c7; }
+        .module h3 { color: #8e44ad; margin-bottom: 15px; font-size: 20px; }
+        .module p { font-size: 15px; color: #444; }
+        .module ul { color: #444; font-size: 15px; }
+        
+        /* Media & Gambar */
+        .video-placeholder { width: 100%; height: 350px; background-color: #2c3e50; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: white; font-weight: bold; margin-bottom: 15px; }
+        .content-img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; margin: 15px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* Kotak Prompt & Contoh */
+        .prompt-box { background-color: #f8f9fa; border-left: 4px solid #9b59b6; padding: 15px; margin: 15px 0; border-radius: 0 5px 5px 0; font-family: Consolas, monospace; font-size: 14px; color: #333; }
+        .result-box { background-color: #e8f8f5; border: 1px solid #1abc9c; padding: 15px; margin: 15px 0; border-radius: 5px; font-size: 14px; color: #2c3e50; }
+        
+        /* Kotak Tugas */
+        .task-box { background-color: #fff3cd; border: 1px solid #ffe69c; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .task-box h4 { margin-top: 0; color: #856404; font-size: 18px; }
+        
+        /* Sidebar */
+        .sidebar { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 20px; }
         .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid #9b59b6; }
         .card h3 { margin-top: 0; color: #2c3e50; font-size: 18px;}
         input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;}
-        button.btn-submit { width: 100%; padding: 10px; background-color: #9b59b6; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button.btn-submit { width: 100%; padding: 12px; background-color: #9b59b6; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.3s;}
         button.btn-submit:hover { background-color: #8e44ad; }
         #msg { font-size: 14px; font-weight: bold; margin-top: 10px; }
     </style>
@@ -32,47 +50,115 @@
     <h2>LPK Alpha Beta Skill</h2>
     <a href="dashboard.html" class="btn-back">Kembali ke Dashboard</a>
 </div>
+
 <div class="container">
     <div class="content-area">
         <span class="badge">Kecerdasan Buatan (AI)</span>
         <h1>Prompt Engineering & Pemanfaatan Generative AI</h1>
-        <p>Tingkatkan produktivitas Anda hingga 10x lipat dengan menguasai cara "berbicara" dengan AI (ChatGPT, Gemini, Midjourney) untuk hasil yang akurat.</p>
+        <p>Tingkatkan produktivitas Anda hingga 10x lipat dengan menguasai cara "berbicara" dengan AI (ChatGPT, Gemini, Midjourney) untuk hasil yang akurat, cepat, dan profesional.</p>
         
         <div class="module">
             <h3>Modul 1: Pengenalan Generative AI</h3>
-            <div class="video-placeholder">[ Embed Video Intro AI ]</div>
-            <p>Memahami apa itu LLM (Large Language Models), batasan, etika penggunaan AI, serta perbedaan ChatGPT, Gemini, dan Claude.</p>
+            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1000&q=80" alt="Ilustrasi Chat AI" class="content-img">
+            <p><strong>Generative AI</strong> adalah jenis kecerdasan buatan yang dapat menghasilkan konten baru berupa teks, gambar, audio, maupun kode komputer. Model bahasa besar (LLM) seperti ChatGPT dari OpenAI dan Gemini dari Google dilatih dengan triliunan data teks sehingga mereka bisa memahami dan merespon bahasa manusia.</p>
+            <p><strong>Aturan Dasar Penggunaan AI:</strong></p>
+            <ul>
+                <li>Jangan masukkan data rahasia perusahaan (password, data finansial sensitif).</li>
+                <li>AI bisa berhalusinasi (memberikan info salah namun terlihat meyakinkan). Selalu lakukan validasi (Fact-Check).</li>
+                <li>AI adalah "asisten", bukan pengganti kreativitas Anda.</li>
+            </ul>
         </div>
+
         <div class="module">
             <h3>Modul 2: Anatomi Prompt yang Sukses</h3>
-            <p>Mempelajari kerangka prompt: Role, Context, Task, dan Format. Cara memanipulasi AI agar memberikan jawaban spesifik layaknya pakar.</p>
+            <p><em>Prompt</em> adalah instruksi atau pertanyaan yang Anda ketikkan ke AI. Rahasia mendapatkan jawaban berkualitas tinggi bukanlah sekadar bertanya, melainkan memberikan konteks menggunakan formula <strong>R.C.T.F</strong>:</p>
+            <ul>
+                <li><strong>Role (Peran):</strong> Anda ingin AI bertindak sebagai siapa?</li>
+                <li><strong>Context (Konteks):</strong> Apa latar belakang masalahnya?</li>
+                <li><strong>Task (Tugas):</strong> Apa yang harus AI kerjakan?</li>
+                <li><strong>Format (Format):</strong> Bagaimana bentuk jawabannya? (Tabel, list, esai, dll)</li>
+            </ul>
+            
+            <p><strong>Contoh Prompt Buruk ❌:</strong></p>
+            <div class="prompt-box">Buatkan ide jualan makanan.</div>
+            
+            <p><strong>Contoh Prompt Baik (Menggunakan Formula R.C.T.F) ✅:</strong></p>
+            <div class="prompt-box">
+                [ROLE] Berperanlah sebagai Pakar Bisnis Kuliner.<br>
+                [CONTEXT] Saya adalah mahasiswa dengan modal awal Rp 500.000 yang ingin berjualan di area kampus.<br>
+                [TASK] Buatkan 3 ide bisnis makanan ringan yang tahan lama dan disukai anak muda.<br>
+                [FORMAT] Sajikan dalam bentuk tabel yang berisi kolom: Nama Makanan, Estimasi Modal, dan Strategi Pemasaran.
+            </div>
+
+            <p><strong>Hasil Jawaban AI:</strong></p>
+            <div class="result-box">
+                <strong>Berikut adalah tabel ide bisnis makanan ringan untuk Anda:</strong><br><br>
+                <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <tr><th style="padding: 5px;">Nama Makanan</th><th style="padding: 5px;">Estimasi Modal</th><th style="padding: 5px;">Strategi Pemasaran</th></tr>
+                    <tr><td style="padding: 5px;">Makaroni Pedas Daun Jeruk</td><td style="padding: 5px;">Rp 250.000</td><td style="padding: 5px;">Tawarkan sampel gratis ke teman kelas, buat level kepedasan.</td></tr>
+                    <tr><td style="padding: 5px;">Keripik Kaca / Singkong</td><td style="padding: 5px;">Rp 200.000</td><td style="padding: 5px;">Jual dengan sistem pre-order (PO) melalui status WhatsApp.</td></tr>
+                    <tr><td style="padding: 5px;">Cookies Cokelat Lumer</td><td style="padding: 5px;">Rp 400.000</td><td style="padding: 5px;">Gunakan packaging estetik, titipkan di kantin kampus.</td></tr>
+                </table>
+            </div>
         </div>
+
         <div class="module">
-            <h3>Modul 3: Otomatisasi Pekerjaan Sehari-hari</h3>
-            <p>Studi kasus menggunakan AI untuk menulis email profesional, menganalisis data Excel/PDF, dan meringkas dokumen rapat.</p>
+            <h3>Modul 3: Otomatisasi Pekerjaan Kantor (Drafting & Summarizing)</h3>
+            <p>AI sangat handal untuk merangkum dokumen panjang atau menyusun draft email profesional. Anda hanya perlu memberikan template instruksinya.</p>
+            
+            <p><strong>Contoh Kasus: Membalas Email Komplain Pelanggan</strong></p>
+            <div class="prompt-box">
+                Tuliskan draft email balasan untuk pelanggan bernama Bapak Budi. Ia marah karena pesanan sepatunya terlambat 3 hari dari jadwal. <br><br>
+                Gunakan nada bicara yang sopan, profesional, dan empatik. Sampaikan permintaan maaf dan berikan solusi berupa voucher diskon 20% untuk pembelian selanjutnya sebagai kompensasi.
+            </div>
         </div>
-        <div class="module" style="border-bottom: none;">
-            <h3>Modul 4: AI Image Generation (Visual)</h3>
-            <p>Dasar-dasar prompt untuk Midjourney / DALL-E 3 untuk membuat ilustrasi, logo, dan konsep desain yang memukau.</p>
+
+        <div class="module">
+            <h3>Modul 4: AI Image Generation (Membuat Gambar dengan Teks)</h3>
+            <img src="https://images.unsplash.com/photo-1686191128892-3b370f807256?auto=format&fit=crop&w=1000&q=80" alt="Hasil AI Image" class="content-img">
+            <p>Selain teks, Generative AI seperti Midjourney, DALL-E 3, atau Bing Image Creator dapat menghasilkan gambar dari deskripsi teks. Kunci prompt gambar adalah: <em>Subject + Environment + Lighting + Style</em>.</p>
+            
+            <p><strong>Contoh Prompt Gambar:</strong></p>
+            <div class="prompt-box">
+                A futuristic sports car driving on a glowing neon street in Tokyo, raining, cyberpunk style, hyper-realistic, 8k resolution, cinematic lighting.
+            </div>
         </div>
+
+        <div class="task-box">
+            <h4>📝 TUGAS PRAKTIK: PROMPT ENGINEERING</h4>
+            <p>Untuk menyelesaikan kursus ini dan mendapatkan nilai, silakan kerjakan tugas berikut:</p>
+            <ol>
+                <li>Buka platform AI favorit Anda (ChatGPT, Google Gemini, atau Claude).</li>
+                <li>Gunakan teknik <strong>Formula R.C.T.F</strong> untuk membuat prompt yang menugaskan AI membuatkan <strong>"Rencana Konten Media Sosial selama 1 Minggu untuk Toko Kopi Lokal"</strong>.</li>
+                <li>Kirimkan prompt tersebut ke AI dan biarkan AI menjawabnya.</li>
+                <li><strong>Screenshot (Tangkapan Layar)</strong> prompt buatan Anda beserta hasil jawaban dari AI.</li>
+                <li>Simpan gambar screenshot tersebut ke dalam file <strong>Microsoft Word / PDF</strong> atau upload gambarnya ke Google Drive.</li>
+            </ol>
+            <p style="color: red; font-size: 13px;"><em>*Penting: Link Google Drive yang disubmit harus sudah di-setting ke "Anyone with the link can view" (Siapa saja yang memiliki link dapat melihat).</em></p>
+        </div>
+
     </div>
+
     <div class="sidebar">
         <div class="card">
-            <h3>Instruktur Kelas</h3>
+            <h3>👨‍🏫 Instruktur Kelas</h3>
             <p style="margin: 0; color: #555;"><strong>Ibu Aida Promptopia</strong></p>
-            <p style="font-size: 13px; color: #7f8c8d;">AI Specialist & Tech Educator</p>
+            <p style="font-size: 13px; color: #7f8c8d; margin-top: 5px;">AI Specialist & Tech Educator</p>
         </div>
+        
         <div class="card" style="border-top-color: #2ecc71;">
-            <h3>Pengumpulan Tugas Akhir</h3>
-            <p style="font-size: 13px; color: gray;">Buat dokumen PDF yang berisi screenshot "Prompt" yang Anda buat dan "Hasil" jawaban dari AI sesuai instruksi soal. Paste link Google Drive PDF-nya di bawah.</p>
-            <input type="url" id="linkTugas" placeholder="https://drive.google.com/..." required>
-            <button class="btn-submit" onclick="kumpulTugas()">Kirim Tugas AI</button>
+            <h3>📤 Pengumpulan Tugas Akhir</h3>
+            <p style="font-size: 13px; color: gray;">Sesuai instruksi pada kotak kuning di samping, masukkan <strong>Link Google Drive</strong> (File PDF/Docx/Gambar) yang berisi hasil praktik Prompt Anda.</p>
+            
+            <input type="url" id="linkTugas" placeholder="https://drive.google.com/file/d/..." required>
+            <button class="btn-submit" onclick="kumpulTugas()">Kirim Tugas Praktik AI</button>
             <p id="msg"></p>
         </div>
     </div>
 </div>
 
 <script>
+    // MASUKKAN URL GOOGLE APPS SCRIPT DI BAWAH INI
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWUrdYTjvdBp89jQDUFhfGH0LRRsPbBinQ1StCafbeDqHPsHqnjkq6iYaBfBIn5t8P/exec";
     const courseId = "AI-001"; 
 
@@ -86,17 +172,32 @@
     async function kumpulTugas() {
         const link = document.getElementById('linkTugas').value;
         const user = JSON.parse(localStorage.getItem("userLMS"));
-        if(!link) return alert("Link tidak boleh kosong!");
-        document.getElementById('msg').innerText = "Mengirim...";
+        
+        if(!link) return alert("Link tugas tidak boleh kosong!");
+        if(!link.includes("http")) return alert("Masukkan URL link yang valid!");
+
+        document.getElementById('msg').innerText = "Mengirim tugas Anda...";
         document.getElementById('msg').style.color = "orange";
+        
         try {
-            let res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "submitTask", userId: user.id, courseId: courseId, linkTugas: link }) });
+            let res = await fetch(SCRIPT_URL, { 
+                method: "POST", 
+                body: JSON.stringify({ action: "submitTask", userId: user.id, courseId: courseId, linkTugas: link }) 
+            });
             let result = await res.json();
+            
             if(result.status === "success") {
-                document.getElementById('msg').innerText = "Tugas AI berhasil dikirim!";
+                document.getElementById('msg').innerText = "✅ Tugas Praktik AI berhasil dikirim!";
                 document.getElementById('msg').style.color = "green";
-            } else { document.getElementById('msg').innerText = "Gagal: " + result.message; }
-        } catch(e) { document.getElementById('msg').innerText = "Gagal menghubungi server."; }
+                document.getElementById('linkTugas').value = ""; // Mengosongkan kolom input
+            } else { 
+                document.getElementById('msg').innerText = "❌ Gagal: " + result.message; 
+                document.getElementById('msg').style.color = "red";
+            }
+        } catch(e) { 
+            document.getElementById('msg').innerText = "❌ Gagal menghubungi server. Cek internet Anda."; 
+            document.getElementById('msg').style.color = "red";
+        }
     }
 </script>
 </body>
