@@ -24,6 +24,10 @@
 <body>
 
 <div class="navbar">
+    <div>
+        <a href="progress.html" style="color:white; margin-right: 15px; text-decoration: none;">Cek Nilai & Sertifikat</a>
+        <button class="logout-btn" onclick="logout()">Keluar</button>
+    </div>
     <h2>LPK Alpha Beta Skill</h2>
     <button class="logout-btn" onclick="logout()">Keluar</button>
 </div>
@@ -42,7 +46,7 @@
 
 <script>
     // MASUKKAN URL GOOGLE APPS SCRIPT DI BAWAH INI
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVWbOJG6UUsna-FAxXDJcjn5kJcHvCZ-UBHzMsAnEdiNa5CY_Y_TNZYv6hjlHxgwJ3/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwW_QvZ24a5bf-Us-0k3KYM_B46fBrWb65sAjjCzERxEExHF1k3ulD1VowlCkp0YPat/exec";
 
     // Cek apakah user sudah login
     window.onload = function() {
@@ -111,7 +115,8 @@
 
     // Fungsi saat tombol "Masuk Kelas" diklik (Bisa dikembangkan nanti)
     function bukaMateri(courseId) {
-        alert("Mengakses modul interaktif untuk ID Kelas: " + courseId + "\n(Fitur Workspace/Tugas akan dikembangkan di tahap selanjutnya)");
+        // Akan membuka halaman course.html sambil membawa ID Kursus
+        window.location.href = "course.html?id=" + courseId;
     }
 </script>
 
