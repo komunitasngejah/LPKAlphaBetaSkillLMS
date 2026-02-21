@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - LPK Alpha Beta Skill</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
         .navbar { background-color: #2c3e50; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
         .navbar h2 { margin: 0; font-size: 20px; }
         .logout-btn { background-color: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
         .logout-btn:hover { background-color: #c0392b; }
-        .container { padding: 30px; max-width: 800px; margin: auto; }
-        .welcome-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .course-list { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .course-card { background: white; padding: 15px; border-radius: 8px; border-left: 5px solid #3498db; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .course-card h4 { margin: 0 0 10px 0; color: #2c3e50; }
-        .btn-belajar { background-color: #3498db; color: white; border: none; padding: 8px; width: 100%; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .container { padding: 30px; max-width: 900px; margin: auto; }
+        .welcome-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; border-left: 5px solid #2ecc71;}
+        .course-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;}
+        .course-card { background: white; padding: 20px; border-radius: 8px; border-top: 5px solid #3498db; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: space-between;}
+        .course-card h4 { margin: 0 0 5px 0; color: #2c3e50; font-size: 18px;}
+        .badge { background-color: #e67e22; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 10px;}
+        .btn-belajar { background-color: #3498db; color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold;}
         .btn-belajar:hover { background-color: #2980b9; }
+        #loadingMsg { color: #7f8c8d; font-style: italic; }
     </style>
 </head>
 <body>
@@ -28,48 +30,89 @@
 
 <div class="container">
     <div class="welcome-card">
-        <h3 id="userNameDisplay">Halo, Memuat nama...</h3>
-        <p>Selamat datang di ruang belajar interaktif Anda. Peran Anda: <b id="userRoleDisplay"></b></p>
+        <h3 id="userNameDisplay">Memuat data...</h3>
+        <p>Akses: <strong id="userRoleDisplay">-</strong> | <span id="userEmailDisplay">-</span></p>
     </div>
 
     <h3>Katalog Kursus Tersedia</h3>
-    <div class="course-list">
-        <div class="course-card">
-            <h4>Microsoft Excel Dasar - Lanjut</h4>
-            <p>Kategori: MS Office</p>
-            <button class="btn-belajar" onclick="alert('Fitur segera hadir!')">Mulai Belajar</button>
-        </div>
-        <div class="course-card">
-            <h4>Fundamental Web Development</h4>
-            <p>Kategori: Web</p>
-            <button class="btn-belajar" onclick="alert('Fitur segera hadir!')">Mulai Belajar</button>
-        </div>
-    </div>
+    <p id="loadingMsg">Mencari kursus di database...</p>
+    
+    <div class="course-list" id="courseContainer"></div>
 </div>
 
 <script>
-    // FUNGSI CEK LOGIN
-    // Skrip ini mencegah orang yang belum login mengakses halaman dashboard
-    function checkLogin() {
+    // MASUKKAN URL GOOGLE APPS SCRIPT DI BAWAH INI
+    const SCRIPT_URL = "URL_WEB_APP_GAS_ANDA";
+
+    // Cek apakah user sudah login
+    window.onload = function() {
         const userData = localStorage.getItem("userLMS");
         if (!userData) {
-            alert("Anda belum login! Silakan login terlebih dahulu.");
-            window.location.href = "index.html"; // Mengembalikan ke halaman login
+            alert("Sesi Anda telah habis. Silakan login kembali.");
+            window.location.href = "index.html";
         } else {
             const user = JSON.parse(userData);
-            document.getElementById("userNameDisplay").innerText = "Halo, " + user.nama + "!";
+            document.getElementById("userNameDisplay").innerText = "Selamat datang, " + user.nama + "!";
             document.getElementById("userRoleDisplay").innerText = user.role;
+            document.getElementById("userEmailDisplay").innerText = user.email;
+            
+            // Panggil fungsi untuk memuat kursus dari Google Sheets
+            loadCourses();
+        }
+    };
+
+    function logout() {
+        localStorage.removeItem("userLMS");
+        window.location.href = "index.html";
+    }
+
+    // Mengambil data kursus dari Google Apps Script
+    async function loadCourses() {
+        try {
+            let response = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "getCourses" })
+            });
+            let result = await response.json();
+            
+            document.getElementById('loadingMsg').style.display = 'none'; // Hilangkan teks loading
+
+            if (result.status === "success" && result.data.length > 0) {
+                renderCourses(result.data);
+            } else {
+                document.getElementById('courseContainer').innerHTML = "<p>Belum ada kursus yang tersedia.</p>";
+            }
+        } catch (e) {
+            document.getElementById('loadingMsg').innerText = "Gagal memuat kursus. Periksa koneksi internet Anda.";
+            document.getElementById('loadingMsg').style.color = "red";
         }
     }
 
-    // FUNGSI LOGOUT
-    function logout() {
-        localStorage.removeItem("userLMS"); // Hapus data sesi login
-        window.location.href = "index.html"; // Kembali ke halaman login
+    // Membuat tampilan HTML untuk setiap kursus yang didapat dari database
+    function renderCourses(courses) {
+        const container = document.getElementById('courseContainer');
+        container.innerHTML = ""; // Bersihkan kontainer
+
+        courses.forEach(course => {
+            const card = document.createElement('div');
+            card.className = "course-card";
+            
+            card.innerHTML = `
+                <div>
+                    <span class="badge">${course.kategori}</span>
+                    <h4>${course.judul}</h4>
+                    <p style="font-size: 13px; color: #7f8c8d;">Pengajar: ${course.instruktur}</p>
+                </div>
+                <button class="btn-belajar" onclick="bukaMateri('${course.id}')">Masuk Kelas</button>
+            `;
+            container.appendChild(card);
+        });
     }
 
-    // Jalankan cek login saat halaman dibuka
-    window.onload = checkLogin;
+    // Fungsi saat tombol "Masuk Kelas" diklik (Bisa dikembangkan nanti)
+    function bukaMateri(courseId) {
+        alert("Mengakses modul interaktif untuk ID Kelas: " + courseId + "\n(Fitur Workspace/Tugas akan dikembangkan di tahap selanjutnya)");
+    }
 </script>
 
 </body>
