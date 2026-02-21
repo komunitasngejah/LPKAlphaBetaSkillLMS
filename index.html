@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LPK Alpha Beta Skill - LMS</title>
+    <title>Login - LPK Alpha Beta Skill</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; text-align: center; }
         h2 { color: #2c3e50; margin-bottom: 20px; }
         input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
@@ -45,8 +45,8 @@
 </div>
 
 <script>
-    // === GANTI URL DI BAWAH INI DENGAN URL DARI GOOGLE APPS SCRIPT ===
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2pDnqwuQHgdyAOLiGlAsFMh6HKmTbCq0Tvyt42KclatwSDY7acasZk41jgCq7yFiC/exec";
+    // MASUKKAN URL GOOGLE APPS SCRIPT DI BAWAH INI
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVWbOJG6UUsna-FAxXDJcjn5kJcHvCZ-UBHzMsAnEdiNa5CY_Y_TNZYv6hjlHxgwJ3/exec";
 
     function toggleForm() {
         document.getElementById('loginForm').classList.toggle('hidden');
@@ -78,13 +78,9 @@
             
             if (result.status === "success") {
                 showMessage(result.message, false);
-                setTimeout(toggleForm, 2000); // Kembali ke login setelah 2 detik
-            } else {
-                showMessage(result.message, true);
-            }
-        } catch (e) {
-            showMessage("Gagal menghubungi server.", true);
-        }
+                setTimeout(toggleForm, 2000); 
+            } else { showMessage(result.message, true); }
+        } catch (e) { showMessage("Gagal menghubungi server.", true); }
     }
 
     async function handleLogin() {
@@ -103,23 +99,13 @@
             let result = await response.json();
             
             if (result.status === "success") {
-                showMessage(`Selamat datang, ${result.userData.nama}! (${result.userData.role})`, false);
-                
-                // Simpan data login di browser agar tidak perlu login terus
+                showMessage(`Login berhasil! Mengalihkan...`, false);
                 localStorage.setItem("userLMS", JSON.stringify(result.userData));
-                
-                // Simulasi pindah halaman (Nantinya diganti ke halaman dashboard sesungguhnya)
-                setTimeout(() => {
-                    alert("Dialihkan ke Dashboard " + result.userData.role);
-                }, 1500);
-            } else {
-                showMessage(result.message, true);
-            }
-        } catch (e) {
-            showMessage("Gagal menghubungi server.", true);
-        }
+                // PINDAH KE DASHBOARD
+                setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
+            } else { showMessage(result.message, true); }
+        } catch (e) { showMessage("Gagal menghubungi server.", true); }
     }
 </script>
-
 </body>
 </html>
