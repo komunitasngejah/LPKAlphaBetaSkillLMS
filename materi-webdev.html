@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Web Development - LPK Alpha Beta Skill</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
+        .navbar { background-color: #2c3e50; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h2 { margin: 0; font-size: 20px; }
+        .btn-back { background-color: #95a5a6; color: white; border: none; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+        .btn-back:hover { background-color: #7f8c8d; }
+        .container { display: flex; flex-wrap: wrap; padding: 20px; max-width: 1000px; margin: auto; gap: 20px; }
+        .content-area { flex: 2; min-width: 300px; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .content-area h1 { color: #2c3e50; margin-top: 0; font-size: 24px;}
+        .badge { background-color: #e74c3c; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 15px; }
+        .module { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #ecf0f1; }
+        .module h3 { color: #3498db; margin-bottom: 10px; }
+        .module p { font-size: 15px; color: #555; line-height: 1.6; }
+        .video-placeholder { width: 100%; height: 300px; background-color: #bdc3c7; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: #2c3e50; font-weight: bold; margin-bottom: 15px; }
+        .sidebar { flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid #e74c3c; }
+        .card h3 { margin-top: 0; color: #2c3e50; font-size: 18px;}
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;}
+        button.btn-submit { width: 100%; padding: 10px; background-color: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button.btn-submit:hover { background-color: #c0392b; }
+        #msg { font-size: 14px; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <h2>LPK Alpha Beta Skill</h2>
+    <a href="dashboard.html" class="btn-back">Kembali ke Dashboard</a>
+</div>
+<div class="container">
+    <div class="content-area">
+        <span class="badge">Pemrograman Web</span>
+        <h1>Fundamental Web Development (HTML, CSS, JS)</h1>
+        <p>Pelajari cara membangun website interaktif dari nol. Memahami kerangka dasar (HTML), mempercantik tampilan (CSS), hingga memberikan logika dan interaktivitas (JavaScript).</p>
+        
+        <div class="module">
+            <h3>Modul 1: Struktur Dasar HTML5</h3>
+            <div class="video-placeholder">[ Embed Video HTML5 ]</div>
+            <p>Membahas tag dasar, form, tabel, hingga semantic tags untuk membangun kerangka website yang baik untuk SEO.</p>
+        </div>
+        <div class="module">
+            <h3>Modul 2: Styling dengan CSS3 & Flexbox/Grid</h3>
+            <p>Cara mengatur warna, tipografi, dan membuat layout website yang responsif di HP maupun Laptop menggunakan Flexbox dan CSS Grid.</p>
+        </div>
+        <div class="module">
+            <h3>Modul 3: Dasar-dasar JavaScript</h3>
+            <p>Mempelajari variabel, fungsi, logika (If/Else), Looping, serta DOM Manipulation untuk membuat web yang hidup (misal: tombol klik, pop-up).</p>
+        </div>
+        <div class="module" style="border-bottom: none;">
+            <h3>Modul 4: Mini Project Landing Page</h3>
+            <p>Menggabungkan HTML, CSS, dan JS untuk membuat landing page portofolio pribadi dan meng-online-kannya via GitHub Pages.</p>
+        </div>
+    </div>
+    <div class="sidebar">
+        <div class="card">
+            <h3>Instruktur Kelas</h3>
+            <p style="margin: 0; color: #555;"><strong>Bpk. Codey Webmaster</strong></p>
+            <p style="font-size: 13px; color: #7f8c8d;">Senior Frontend Developer</p>
+        </div>
+        <div class="card" style="border-top-color: #2ecc71;">
+            <h3>Pengumpulan Tugas Akhir</h3>
+            <p style="font-size: 13px; color: gray;">Masukkan Link Live dari GitHub Pages Anda atau link folder Google Drive berisi file coding Anda (.html, .css, .js).</p>
+            <input type="url" id="linkTugas" placeholder="https://github.com/... atau Drive" required>
+            <button class="btn-submit" onclick="kumpulTugas()">Kirim Tugas Web</button>
+            <p id="msg"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWUrdYTjvdBp89jQDUFhfGH0LRRsPbBinQ1StCafbeDqHPsHqnjkq6iYaBfBIn5t8P/exec";
+    const courseId = "WEB-001"; 
+
+    window.onload = function() {
+        if (!localStorage.getItem("userLMS")) {
+            alert("Sesi habis. Silakan login.");
+            window.location.href = "index.html";
+        }
+    };
+
+    async function kumpulTugas() {
+        const link = document.getElementById('linkTugas').value;
+        const user = JSON.parse(localStorage.getItem("userLMS"));
+        if(!link) return alert("Link tidak boleh kosong!");
+        document.getElementById('msg').innerText = "Mengirim...";
+        document.getElementById('msg').style.color = "orange";
+        try {
+            let res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "submitTask", userId: user.id, courseId: courseId, linkTugas: link }) });
+            let result = await res.json();
+            if(result.status === "success") {
+                document.getElementById('msg').innerText = "Tugas Web berhasil dikirim!";
+                document.getElementById('msg').style.color = "green";
+            } else { document.getElementById('msg').innerText = "Gagal: " + result.message; }
+        } catch(e) { document.getElementById('msg').innerText = "Gagal menghubungi server."; }
+    }
+</script>
+</body>
+</html>
