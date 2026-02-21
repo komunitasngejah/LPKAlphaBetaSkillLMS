@@ -218,11 +218,14 @@
         });
     }
 
-    // Fungsi saat tombol "Masuk Kelas" diklik (DIMODIFIKASI)
+    // Fungsi saat tombol "Masuk Kelas" diklik (DIMODIFIKASI UNTUK EXCEL DAN OFFICE)
     function bukaMateri(courseId) {
-        // Cek jika ID kursus adalah kelas Excel yang kita buat
         if(courseId === "EXCEL-001") {
+            // Arahkan ke materi khusus Excel
             window.location.href = "materi-excel.html";
+        } else if (courseId === "OFFICE-001") {
+            // Arahkan ke materi khusus Office Perkantoran
+            window.location.href = "materi-office.html";
         } else {
             // Untuk kursus lainnya, masuk ke halaman course.html bawaan
             window.location.href = "course.html?id=" + courseId;
