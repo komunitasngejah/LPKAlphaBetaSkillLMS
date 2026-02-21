@@ -218,10 +218,15 @@
         });
     }
 
-    // Fungsi saat tombol "Masuk Kelas" diklik
+    // Fungsi saat tombol "Masuk Kelas" diklik (DIMODIFIKASI)
     function bukaMateri(courseId) {
-        // Akan membuka halaman course.html sambil membawa ID Kursus
-        window.location.href = "course.html?id=" + courseId;
+        // Cek jika ID kursus adalah kelas Excel yang kita buat
+        if(courseId === "EXCEL-001") {
+            window.location.href = "materi-excel.html";
+        } else {
+            // Untuk kursus lainnya, masuk ke halaman course.html bawaan
+            window.location.href = "course.html?id=" + courseId;
+        }
     }
 </script>
 
