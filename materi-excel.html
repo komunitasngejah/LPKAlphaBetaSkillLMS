@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Excel - LPK Alpha Beta Skill</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
+        
+        /* Navbar */
+        .navbar { background-color: #2c3e50; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h2 { margin: 0; font-size: 20px; }
+        .btn-back { background-color: #95a5a6; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; text-decoration: none;}
+        .btn-back:hover { background-color: #7f8c8d; }
+
+        /* Layout Container */
+        .container { display: flex; flex-wrap: wrap; padding: 20px; max-width: 1000px; margin: auto; gap: 20px; }
+        
+        /* Left Column: Materi */
+        .content-area { flex: 2; min-width: 300px; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .content-area h1 { color: #2c3e50; margin-top: 0; font-size: 24px;}
+        .badge { background-color: #27ae60; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 15px; }
+        
+        .module { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #ecf0f1; }
+        .module h3 { color: #3498db; margin-bottom: 10px; }
+        .module p { font-size: 15px; color: #555; line-height: 1.6; }
+        .video-placeholder { width: 100%; height: 300px; background-color: #bdc3c7; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: #2c3e50; font-weight: bold; margin-bottom: 15px; }
+
+        /* Right Column: Sidebar (Tugas & Info) */
+        .sidebar { flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid #e67e22; }
+        .card h3 { margin-top: 0; color: #2c3e50; font-size: 18px;}
+        
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;}
+        button.btn-submit { width: 100%; padding: 10px; background-color: #e67e22; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button.btn-submit:hover { background-color: #d35400; }
+        #msg { font-size: 14px; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h2>LPK Alpha Beta Skill</h2>
+    <a href="dashboard.html" class="btn-back">Kembali ke Dashboard</a>
+</div>
+
+<div class="container">
+    <div class="content-area">
+        <span class="badge">Administrasi Perkantoran</span>
+        <h1>Mahir Microsoft Excel: Dari Dasar hingga Macro/VBA</h1>
+        <p>Pelajari cara mengolah data dengan cepat, membuat laporan interaktif menggunakan Pivot Table, hingga mengotomatisasi pekerjaan rutin dengan Macro dan VBA.</p>
+        
+        <div class="module">
+            <h3>Modul 1: Pengenalan & Rumus Dasar</h3>
+            <div class="video-placeholder">[ Tempatkan Embed Video YouTube/Drive di Sini ]</div>
+            <p>Membahas antarmuka Excel, format cell, dan rumus dasar aritmatika (SUM, AVERAGE, MIN, MAX, COUNT).</p>
+        </div>
+
+        <div class="module">
+            <h3>Modul 2: Fungsi Logika & Referensi (VLOOKUP/HLOOKUP)</h3>
+            <p>Memahami penggunaan fungsi IF bertingkat, AND/OR, serta mengambil data dari tabel lain menggunakan VLOOKUP, HLOOKUP, dan XLOOKUP (Excel 365).</p>
+        </div>
+
+        <div class="module">
+            <h3>Modul 3: Pivot Table & Dashboard Data</h3>
+            <p>Cara merangkum ribuan baris data dalam hitungan detik menggunakan Pivot Table dan memvisualisasikannya dengan Pivot Chart untuk membuat Dashboard.</p>
+        </div>
+
+        <div class="module" style="border-bottom: none;">
+            <h3>Modul 4: Otomatisasi dengan Macro & VBA Dasar</h3>
+            <p>Merekam aktivitas berulang dengan Record Macro dan memahami jendela Visual Basic for Applications (VBA) untuk mengedit script otomatisasi sederhana.</p>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="card">
+            <h3>Instruktur Kelas</h3>
+            <p style="margin: 0; color: #555;"><strong>Bpk. Ahmad Excelindo</strong></p>
+            <p style="font-size: 13px; color: #7f8c8d;">Data Analyst & Microsoft Certified Trainer</p>
+        </div>
+
+        <div class="card" style="border-top-color: #2ecc71;">
+            <h3>Pengumpulan Tugas Akhir</h3>
+            <p style="font-size: 13px; color: gray;">Buatlah file Excel (.xlsx / .xlsm) sesuai instruksi modul, upload ke Google Drive Anda, lalu paste link-nya di sini.</p>
+            <p style="font-size: 12px; color: red;">*Pastikan akses link Drive di-set ke "Anyone with the link"</p>
+            
+            <input type="url" id="linkTugas" placeholder="https://drive.google.com/..." required>
+            <button class="btn-submit" onclick="kumpulTugas()">Kirim Tugas Excel</button>
+            <p id="msg"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // MASUKKAN URL GOOGLE APPS SCRIPT DI BAWAH INI
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWUrdYTjvdBp89jQDUFhfGH0LRRsPbBinQ1StCafbeDqHPsHqnjkq6iYaBfBIn5t8P/exec";
+    
+    // Hardcode ID Kursus untuk halaman spesifik ini
+    const courseId = "EXCEL-001"; 
+
+    // Cek Sesi Login
+    window.onload = function() {
+        const user = localStorage.getItem("userLMS");
+        if (!user) {
+            alert("Sesi Anda telah habis. Silakan login kembali.");
+            window.location.href = "index.html";
+        }
+    };
+
+    async function kumpulTugas() {
+        const link = document.getElementById('linkTugas').value;
+        const user = JSON.parse(localStorage.getItem("userLMS"));
+
+        if(!user) return alert("Silakan login kembali!");
+        if(!link) return alert("Link tugas tidak boleh kosong!");
+        if(!link.includes("http")) return alert("Harap masukkan URL link yang valid!");
+
+        document.getElementById('msg').innerText = "Mengirim tugas...";
+        document.getElementById('msg').style.color = "orange";
+
+        try {
+            let response = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "submitTask", userId: user.id, courseId: courseId, linkTugas: link })
+            });
+            let result = await response.json();
+            
+            if(result.status === "success") {
+                document.getElementById('msg').innerText = "Tugas Excel berhasil dikirim!";
+                document.getElementById('msg').style.color = "green";
+                document.getElementById('linkTugas').value = ""; // Kosongkan input
+            } else {
+                document.getElementById('msg').innerText = result.message || "Gagal mengirim.";
+                document.getElementById('msg').style.color = "red";
+            }
+        } catch (e) {
+            document.getElementById('msg').innerText = "Gagal menghubungi server.";
+            document.getElementById('msg').style.color = "red";
+        }
+    }
+</script>
+</body>
+</html>
