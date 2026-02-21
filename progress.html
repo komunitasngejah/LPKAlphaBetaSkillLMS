@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress & Sertifikat</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background-color: #f4f7f6; padding: 20px; }
+        .container { background: white; padding: 30px; max-width: 800px; margin: auto; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        .btn-back { background-color: #95a5a6; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <button class="btn-back" onclick="window.location.href='dashboard.html'">Kembali</button>
+    <h2>Laporan Nilai & Sertifikat</h2>
+    
+    <h3>Tugas yang Dikumpulkan</h3>
+    <table>
+        <thead><tr><th>ID Kursus</th><th>Link Tugas</th><th>Nilai</th><th>Catatan Instruktur</th></tr></thead>
+        <tbody id="tableNilai"><tr><td colspan="4">Memuat data...</td></tr></tbody>
+    </table>
+
+    <h3 style="margin-top: 30px;">Sertifikat Anda</h3>
+    <table>
+        <thead><tr><th>ID Kursus</th><th>Tanggal Lulus</th><th>Aksi</th></tr></thead>
+        <tbody id="tableSertifikat"><tr><td colspan="3">Memuat data...</td></tr></tbody>
+    </table>
+</div>
+
+<script>
+    // MASUKKAN URL GOOGLE APPS SCRIPT DI BAWAH INI
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwW_QvZ24a5bf-Us-0k3KYM_B46fBrWb65sAjjCzERxEExHF1k3ulD1VowlCkp0YPat/exec";
+
+    window.onload = async function() {
+        const user = JSON.parse(localStorage.getItem("userLMS"));
+        if(!user) {
+            alert("Sesi habis!"); window.location.href = "index.html"; return;
+        }
+
+        try {
+            let response = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "getProgress", userId: user.id })
+            });
+            let result = await response.json();
+
+            // Render Nilai
+            let trNilai = "";
+            if(result.submissions.length === 0) trNilai = "<tr><td colspan='4'>Belum ada tugas dikumpulkan</td></tr>";
+            result.submissions.forEach(sub => {
+                trNilai += `<tr><td>${sub.courseId}</td><td><a href="${sub.link}" target="_blank">Lihat File</a></td><td><strong>${sub.nilai}</strong></td><td>${sub.feedback}</td></tr>`;
+            });
+            document.getElementById('tableNilai').innerHTML = trNilai;
+
+            // Render Sertifikat
+            let trCert = "";
+            if(result.certificates.length === 0) trCert = "<tr><td colspan='3'>Belum ada sertifikat</td></tr>";
+            result.certificates.forEach(cert => {
+                // Formatting Tanggal Excel ke teks biasa
+                let dateStr = new Date(cert.tanggal).toLocaleDateString("id-ID");
+                trCert += `<tr><td>${sub.courseId}</td><td>${dateStr}</td><td><a href="${cert.link}" target="_blank">Download PDF</a></td></tr>`;
+            });
+            document.getElementById('tableSertifikat').innerHTML = trCert;
+
+        } catch(e) {
+            document.getElementById('tableNilai').innerHTML = "<tr><td colspan='4' style='color:red;'>Gagal memuat data</td></tr>";
+        }
+    };
+</script>
+</body>
+</html>
