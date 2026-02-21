@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Blogging & AdSense - LPK Alpha Beta Skill</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
+        .navbar { background-color: #2c3e50; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h2 { margin: 0; font-size: 20px; }
+        .btn-back { background-color: #95a5a6; color: white; border: none; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+        .btn-back:hover { background-color: #7f8c8d; }
+        
+        .container { display: flex; flex-wrap: wrap; padding: 20px; max-width: 1000px; margin: auto; gap: 20px; }
+        
+        .content-area { flex: 2; min-width: 300px; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .content-area h1 { color: #2c3e50; margin-top: 0; font-size: 24px;}
+        .badge { background-color: #16a085; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 15px; }
+        
+        .module { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #ecf0f1; }
+        .module h3 { color: #16a085; margin-bottom: 10px; }
+        .module p { font-size: 15px; color: #555; line-height: 1.6; }
+        .video-placeholder { width: 100%; height: 300px; background-color: #bdc3c7; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: #2c3e50; font-weight: bold; margin-bottom: 15px; }
+        
+        .sidebar { flex: 1; min-width: 250px; display: flex; flex-direction: column; gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid #16a085; }
+        .card h3 { margin-top: 0; color: #2c3e50; font-size: 18px;}
+        
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;}
+        button.btn-submit { width: 100%; padding: 10px; background-color: #16a085; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button.btn-submit:hover { background-color: #1abc9c; }
+        #msg { font-size: 14px; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <h2>LPK Alpha Beta Skill</h2>
+    <a href="dashboard.html" class="btn-back">Kembali ke Dashboard</a>
+</div>
+<div class="container">
+    <div class="content-area">
+        <span class="badge">Digital Marketing & Monetisasi</span>
+        <h1>Membangun Blog Profesional & Monetisasi AdSense</h1>
+        <p>Belajar membuat blog dari nol menggunakan platform gratis Blogger (Blogspot), menulis artikel SEO-friendly, hingga mendaftarkan blog ke Google AdSense untuk menghasilkan pasif income.</p>
+        
+        <div class="module">
+            <h3>Modul 1: Pengenalan Blogger & Setup Awal</h3>
+            <div class="video-placeholder">[ Embed Video Setup Blogger ]</div>
+            <p>Cara membuat blog pertama Anda di Blogger.com, memilih dan menginstal template SEO-friendly, mengatur navigasi, serta menghubungkan blog dengan Custom Domain (.com / .id).</p>
+        </div>
+        <div class="module">
+            <h3>Modul 2: Riset Keyword & Penulisan Artikel SEO</h3>
+            <p>Rahasia mendatangkan pengunjung gratis dari Google. Mempelajari cara mencari kata kunci (keyword) yang banyak dicari orang namun minim persaingan, serta teknik menulis artikel yang disukai mesin pencari.</p>
+        </div>
+        <div class="module">
+            <h3>Modul 3: Optimasi SEO On-Page & Off-Page</h3>
+            <p>Meningkatkan peringkat blog Anda dengan optimasi Meta Tag, struktur URL, Internal Linking, cara mendapatkan Backlink berkualitas, dan mendaftarkan blog ke Google Search Console.</p>
+        </div>
+        <div class="module" style="border-bottom: none;">
+            <h3>Modul 4: Monetisasi Google AdSense</h3>
+            <p>Memahami syarat kelayakan daftar AdSense, cara memasang kode iklan di template blog, tips jitu agar blog cepat di-approve (diterima) oleh tim Google AdSense, dan menghindari pelanggaran kebijakan (Banned).</p>
+        </div>
+    </div>
+    
+    <div class="sidebar">
+        <div class="card">
+            <h3>Instruktur Kelas</h3>
+            <p style="margin: 0; color: #555;"><strong>Bpk. Adito Publisher</strong></p>
+            <p style="font-size: 13px; color: #7f8c8d;">Blogger Profesional & SEO Specialist</p>
+        </div>
+        <div class="card" style="border-top-color: #2ecc71;">
+            <h3>Pengumpulan Tugas Akhir</h3>
+            <p style="font-size: 13px; color: gray;">Buatlah sebuah blog menggunakan platform Blogger yang berisi minimal 5 artikel SEO-friendly sesuai niche pilihan Anda. Masukkan URL / Link blog Anda di bawah ini.</p>
+            <input type="url" id="linkTugas" placeholder="https://nama-blog-anda.blogspot.com" required>
+            <button class="btn-submit" onclick="kumpulTugas()">Kirim Tugas Blog</button>
+            <p id="msg"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWUrdYTjvdBp89jQDUFhfGH0LRRsPbBinQ1StCafbeDqHPsHqnjkq6iYaBfBIn5t8P/exec";
+    const courseId = "BLOG-001"; // ID Khusus untuk kelas Blogger AdSense
+
+    window.onload = function() {
+        if (!localStorage.getItem("userLMS")) {
+            alert("Sesi habis. Silakan login.");
+            window.location.href = "index.html";
+        }
+    };
+
+    async function kumpulTugas() {
+        const link = document.getElementById('linkTugas').value;
+        const user = JSON.parse(localStorage.getItem("userLMS"));
+        if(!link) return alert("Link blog tidak boleh kosong!");
+        if(!link.includes("http")) return alert("Harap masukkan URL yang valid (menggunakan http/https)!");
+        
+        document.getElementById('msg').innerText = "Mengirim...";
+        document.getElementById('msg').style.color = "orange";
+        try {
+            let res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "submitTask", userId: user.id, courseId: courseId, linkTugas: link }) });
+            let result = await res.json();
+            if(result.status === "success") {
+                document.getElementById('msg').innerText = "Tugas Blog berhasil dikirim!";
+                document.getElementById('msg').style.color = "green";
+                document.getElementById('linkTugas').value = "";
+            } else { document.getElementById('msg').innerText = "Gagal: " + result.message; }
+        } catch(e) { document.getElementById('msg').innerText = "Gagal menghubungi server."; }
+    }
+</script>
+</body>
+</html>
