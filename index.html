@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LPK Alpha Beta Skill - LMS</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        h2 { color: #2c3e50; margin-bottom: 20px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        button:hover { background-color: #2980b9; }
+        .toggle-text { margin-top: 15px; font-size: 14px; color: #7f8c8d; cursor: pointer; }
+        .toggle-text:hover { color: #3498db; text-decoration: underline; }
+        .hidden { display: none; }
+        #message { margin-top: 15px; font-size: 14px; font-weight: bold; }
+        .success { color: #2ecc71; }
+        .error { color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>LPK Alpha Beta Skill</h2>
+    
+    <div id="loginForm">
+        <h3>Login</h3>
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button onclick="handleLogin()">Masuk</button>
+        <div class="toggle-text" onclick="toggleForm()">Belum punya akun? Daftar di sini</div>
+    </div>
+
+    <div id="registerForm" class="hidden">
+        <h3>Daftar Peserta Baru</h3>
+        <input type="text" id="regNama" placeholder="Nama Lengkap" required>
+        <input type="email" id="regEmail" placeholder="Email" required>
+        <input type="password" id="regPassword" placeholder="Password" required>
+        <button onclick="handleRegister()">Daftar</button>
+        <div class="toggle-text" onclick="toggleForm()">Sudah punya akun? Login di sini</div>
+    </div>
+
+    <div id="message"></div>
+</div>
+
+<script>
+    // === GANTI URL DI BAWAH INI DENGAN URL DARI GOOGLE APPS SCRIPT ===
+    const SCRIPT_URL = "MASUKKAN_URL_WEB_APP_ANDA_DI_SINI";
+
+    function toggleForm() {
+        document.getElementById('loginForm').classList.toggle('hidden');
+        document.getElementById('registerForm').classList.toggle('hidden');
+        document.getElementById('message').innerText = "";
+    }
+
+    function showMessage(text, isError) {
+        const msgDiv = document.getElementById('message');
+        msgDiv.innerText = text;
+        msgDiv.className = isError ? "error" : "success";
+    }
+
+    async function handleRegister() {
+        const nama = document.getElementById('regNama').value;
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+
+        if (!nama || !email || !password) return showMessage("Harap isi semua kolom!", true);
+
+        showMessage("Sedang mendaftar...", false);
+        
+        try {
+            let response = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "register", nama: nama, email: email, password: password })
+            });
+            let result = await response.json();
+            
+            if (result.status === "success") {
+                showMessage(result.message, false);
+                setTimeout(toggleForm, 2000); // Kembali ke login setelah 2 detik
+            } else {
+                showMessage(result.message, true);
+            }
+        } catch (e) {
+            showMessage("Gagal menghubungi server.", true);
+        }
+    }
+
+    async function handleLogin() {
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        if (!email || !password) return showMessage("Isi Email dan Password!", true);
+
+        showMessage("Memeriksa data...", false);
+
+        try {
+            let response = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "login", email: email, password: password })
+            });
+            let result = await response.json();
+            
+            if (result.status === "success") {
+                showMessage(`Selamat datang, ${result.userData.nama}! (${result.userData.role})`, false);
+                
+                // Simpan data login di browser agar tidak perlu login terus
+                localStorage.setItem("userLMS", JSON.stringify(result.userData));
+                
+                // Simulasi pindah halaman (Nantinya diganti ke halaman dashboard sesungguhnya)
+                setTimeout(() => {
+                    alert("Dialihkan ke Dashboard " + result.userData.role);
+                }, 1500);
+            } else {
+                showMessage(result.message, true);
+            }
+        } catch (e) {
+            showMessage("Gagal menghubungi server.", true);
+        }
+    }
+</script>
+
+</body>
+</html>
