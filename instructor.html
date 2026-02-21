@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Instruktur - LPK Alpha Beta</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background-color: #f4f7f6; padding: 20px; margin: 0; }
+        .navbar { background-color: #2c3e50; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-radius: 8px; }
+        .container { background: white; padding: 20px; margin: auto; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 14px; }
+        th { background-color: #2ecc71; color: white; }
+        input[type="number"], input[type="text"] { width: 90%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 8px 12px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #2980b9; }
+        .btn-logout { background-color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h2 style="margin:0;">Dashboard Instruktur / Admin</h2>
+    <div>
+        <button onclick="window.location.href='dashboard.html'" style="margin-right: 10px;">Ke Dashboard Biasa</button>
+        <button class="btn-logout" onclick="logout()">Keluar</button>
+    </div>
+</div>
+
+<div class="container">
+    <h3>Daftar Tugas Masuk (Queue)</h3>
+    <p id="statusMsg">Memuat data tugas...</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID Tugas</th>
+                <th>User ID</th>
+                <th>Course ID</th>
+                <th>File Tugas</th>
+                <th>Nilai (0-100)</th>
+                <th>Komentar / Feedback</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            </tbody>
+    </table>
+</div>
+
+<script>
+    // MASUKKAN URL GOOGLE APPS SCRIPT DI BAWAH INI
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxDb1SezHX-15X4YGVyFMOTYhGo2DYXcDDhA7JEcRVDVeg_cKBrCcJTSqx8tWz2l1z7/exec";
+
+    // 1. Cek Keamanan Hak Akses
+    window.onload = function() {
+        const user = JSON.parse(localStorage.getItem("userLMS"));
+        if (!user) {
+            alert("Silakan login!"); window.location.href = "index.html"; return;
+        }
+        if (user.role !== "Instruktur" && user.role !== "Admin") {
+            alert("Akses Ditolak! Anda bukan Instruktur."); 
+            window.location.href = "dashboard.html"; return;
+        }
+        loadSubmissions();
+    };
+
+    function logout() {
+        localStorage.removeItem("userLMS"); window.location.href = "index.html";
+    }
+
+    // 2. Ambil Data Tugas dari Server
+    async function loadSubmissions() {
+        try {
+            let response = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "getAllSubmissions" })
+            });
+            let result = await response.json();
+            
+            document.getElementById('statusMsg').style.display = 'none';
+            renderTable(result.data);
+        } catch (e) {
+            document.getElementById('statusMsg').innerText = "Gagal memuat data.";
+        }
+    }
+
+    // 3. Tampilkan Data ke Tabel
+    function renderTable(data) {
+        let tbody = document.getElementById('tableBody');
+        tbody.innerHTML = "";
+
+        if(data.length === 0) {
+            tbody.innerHTML = "<tr><td colspan='7'>Belum ada tugas yang dikumpulkan peserta.</td></tr>";
+            return;
+        }
+
+        data.forEach((item, index) => {
+            // Ubah teks "Belum Dinilai" jadi angka kosong agar mudah diisi di input
+            let nilaiTampil = isNaN(item.nilai) ? "" : item.nilai;
+            let feedbackTampil = item.feedback === "Belum ada feedback" ? "" : item.feedback;
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>${item.subId}</td>
+                    <td>${item.userId}</td>
+                    <td>${item.courseId}</td>
+                    <td><a href="${item.linkTugas}" target="_blank">Buka Tugas</a></td>
+                    <td><input type="number" id="nilai_${item.subId}" value="${nilaiTampil}" placeholder="0-100"></td>
+                    <td><input type="text" id="feedback_${item.subId}" value="${feedbackTampil}" placeholder="Tulis komentar..."></td>
+                    <td><button onclick="simpanNilai('${item.subId}')">Simpan</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    // 4. Simpan Nilai ke Google Sheets
+    async function simpanNilai(subId) {
+        const nilaiBaru = document.getElementById(`nilai_${subId}`).value;
+        const feedbackBaru = document.getElementById(`feedback_${subId}`).value;
+
+        if (nilaiBaru === "") return alert("Nilai tidak boleh kosong!");
+
+        try {
+            let response = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ 
+                    action: "updateGrade", 
+                    subId: subId, 
+                    nilai: nilaiBaru, 
+                    feedback: feedbackBaru 
+                })
+            });
+            let result = await response.json();
+            
+            if(result.status === "success") {
+                alert("Berhasil disimpan!");
+            } else {
+                alert("Gagal: " + result.message);
+            }
+        } catch (e) {
+            alert("Gagal menghubungi server.");
+        }
+    }
+</script>
+</body>
+</html>
